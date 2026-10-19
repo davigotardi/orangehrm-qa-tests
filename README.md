@@ -24,7 +24,10 @@ O módulo Claim é usado como cenário de aprovação de negócio, em substitui�
 
 ## Estrutura
 
-
+- [`docs/execucao.md`](docs/execucao.md): preparação, dados de teste, registro de resultados e critério de saída.
+- [`docs/casos-pim.md`](docs/casos-pim.md): cadastro, edição, busca e filtros de funcionários.
+- [`docs/casos-acesso.md`](docs/casos-acesso.md): navegação e verificação de acesso por perfil.
+- [`docs/casos-claim.md`](docs/casos-claim.md): criação, envio e aprovação/rejeição de solicitações de reembolso.
 
 ## Ambiente de teste
 
