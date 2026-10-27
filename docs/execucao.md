@@ -14,10 +14,9 @@ Prioridades indicam impacto no objetivo funcional: **Alta** cobre fluxos essenci
 
 1. Registre URL, data/hora, versão/build (se disponível), navegador e perfil utilizado.
 2. Confirme que a instância está disponível e que as credenciais de teste estão válidas. Não registre senhas nem use dados pessoais.
-3. Prepare funcionários e contas dedicados a teste, sem reutilizar IDs ou nomes que possam pertencer a outros usuários.
-4. Para `ACC`, obtenha a matriz de permissões esperada para Admin, Supervisor e ESS. As permissões podem variar entre instalações.
-5. Para `CLM`, confirme que o módulo está habilitado e registre as categorias, moeda, regras de valor/data, fluxo de aprovação e contas aprovadoras configuradas.
-6. Registre os dados de teste usados de forma não sensível para que a execução possa ser repetida.
+3. Preencha [parâmetros da instância e dados de teste](parametros-instancia.md), incluindo a matriz ACC, campos/regras de Claim e fixtures. Não comece casos dependentes de parâmetros em branco ou não confirmados: marque-os como bloqueados.
+4. Prepare contas dedicadas de teste, sem reutilizar IDs ou nomes existentes. Use o identificador único da rodada para gerar os IDs das fixtures.
+5. Registre os dados de teste usados de forma não sensível para que a execução possa ser repetida.
 
 Não altere dados de produção. Na demo pública, considere que dados e configuração podem ser redefinidos ou modificados por terceiros.
 
@@ -45,9 +44,9 @@ Para cada execução, registre:
 
 Em reprovações, preserve evidências sem expor senhas ou dados pessoais. Registre o texto exato de mensagens, limites e regras observadas quando forem relevantes.
 
-## Regras configuráveis
+## Regras da instância
 
-Casos de permissão dependem da matriz de acesso aprovada para a instalação. Casos de Claim dependem de regras como categorias, moeda, limites, período permitido e cadeia de aprovação. Se uma regra não estiver documentada ou não puder ser confirmada, marque o caso como bloqueado em vez de inferir um resultado esperado.
+Os resultados esperados que dependem da instalação devem ser preenchidos e aprovados em [parâmetros da instância e dados de teste](parametros-instancia.md) antes da rodada. Registre ali a matriz de acesso, categorias, moeda, precisão, limites, datas permitidas, campos obrigatórios e transições de status. Não transforme comportamento descoberto durante o teste em requisito retroativo; se um parâmetro estiver ausente, marque o caso dependente como bloqueado.
 
 ## Critério de saída
 

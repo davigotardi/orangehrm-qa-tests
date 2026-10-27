@@ -1,6 +1,6 @@
 # Casos de teste — PIM e funcionários
 
-Use contas autorizadas para PIM e dados fictícios exclusivos da instância. Para os casos de criação, confirme previamente quais campos são obrigatórios na versão em uso.
+Antes da execução, preencha os campos obrigatórios, limites de texto e critérios de pesquisa em [parâmetros da instância e dados de teste](parametros-instancia.md). Use as fixtures fictícias dessa ficha e bloqueie os casos que dependam de parâmetros não confirmados.
 
 ## PIM-001 — Abrir a lista de funcionários
 
@@ -15,47 +15,48 @@ Use contas autorizadas para PIM e dados fictícios exclusivos da instância. Par
 ## PIM-002 — Cadastrar funcionário com dados válidos
 
 **Prioridade:** Alta  
-**Pré-condições:** usuário com permissão de criação; nome e ID exclusivos; campos obrigatórios conhecidos.
+**Pré-condições:** usuário com permissão de criação; fixtures PIM válidas preenchidas e exclusivas; campos obrigatórios confirmados.
 
 1. Inicie a inclusão de um funcionário.
-2. Preencha os campos obrigatórios com dados fictícios válidos e um ID ainda não utilizado.
+2. Preencha os campos obrigatórios usando a fixture válida da ficha de parâmetros e um Employee Id ainda não utilizado.
 3. Salve o cadastro.
 4. Pesquise o funcionário pelo ID criado.
 
-**Resultado esperado:** o cadastro é salvo uma única vez e o funcionário pode ser localizado com os dados informados.
+**Resultado esperado:** o cadastro é salvo uma única vez; a pesquisa pelo Employee Id da fixture retorna exatamente um funcionário com First Name, Middle Name e Last Name iguais aos cadastrados.
 
 ## PIM-003 — Validar campos obrigatórios no cadastro
 
-**Prioridade:** Média  
-**Pré-condições:** usuário com permissão de criação.
+**Prioridade:** Média
+
+**Pré-condições:** usuário com permissão de criação; fixture inválida da ficha preenchida; campo First Name confirmado como obrigatório.
 
 1. Abra o formulário de inclusão.
-2. Deixe sem preencher um campo identificado pela instância como obrigatório.
+2. Deixe First Name vazio, conforme a fixture inválida.
 3. Tente salvar.
 
-**Resultado esperado:** o sistema não cria o cadastro incompleto e indica os campos que precisam ser corrigidos.
+**Resultado esperado:** o sistema não cria o cadastro e identifica First Name como obrigatório. A busca pelo Employee Id da fixture não retorna funcionário.
 
 ## PIM-004 — Impedir ID de funcionário duplicado
 
 **Prioridade:** Alta  
-**Pré-condições:** usuário com permissão de criação; existe um funcionário de teste com ID conhecido.
+**Pré-condições:** usuário com permissão de criação; fixture válida criada com sucesso e Employee Id registrado.
 
 1. Inicie um novo cadastro.
-2. Informe outro conjunto de dados, mas reutilize o ID existente.
+2. Use a fixture duplicada, mantendo o Employee Id da fixture válida e alterando o nome.
 3. Tente salvar.
 
-**Resultado esperado:** o sistema não cria um segundo funcionário com o mesmo ID e informa que o dado precisa ser corrigido.
+**Resultado esperado:** o sistema rejeita o cadastro duplicado; a busca pelo Employee Id retorna somente o registro original e seus nomes não foram alterados.
 
 ## PIM-005 — Editar dados de funcionário
 
 **Prioridade:** Alta  
-**Pré-condições:** usuário com permissão de edição; funcionário de teste identificável.
+**Pré-condições:** usuário com permissão de edição; fixture válida criada em PIM-002.
 
-1. Localize o funcionário e abra sua edição.
-2. Altere um campo editável para um valor fictício válido.
+1. Localize o funcionário pela fixture e abra sua edição.
+2. Altere Last Name de `PIM` para `PIM Atualizado`.
 3. Salve e reabra o registro.
 
-**Resultado esperado:** o valor atualizado é persistido no registro correto; o ID do funcionário permanece associado ao mesmo registro, salvo se a instalação permitir explicitamente sua edição.
+**Resultado esperado:** Last Name passa a ser exatamente `PIM Atualizado`; Employee Id continua igual ao da fixture e associado ao mesmo registro. Falha ao persistir o nome ou alteração de Employee Id reprova o caso.
 
 ## PIM-006 — Buscar funcionário por ID
 
@@ -69,13 +70,14 @@ Use contas autorizadas para PIM e dados fictícios exclusivos da instância. Par
 
 ## PIM-007 — Buscar funcionário por nome
 
-**Prioridade:** Média  
-**Pré-condições:** existe funcionário de teste com nome conhecido e não ambíguo.
+**Prioridade:** Média
+
+**Pré-condições:** fixture válida criada em PIM-002; First Name `QA` não é usado por outro funcionário.
 
 1. Informe o nome no campo de busca correspondente.
 2. Execute a pesquisa.
 
-**Resultado esperado:** o funcionário esperado aparece nos resultados. Se a busca for parcial ou não distinguir maiúsculas/minúsculas, registre o comportamento observado sem tratá-lo como falha, a menos que exista requisito específico.
+**Resultado esperado:** a pesquisa pelo First Name `QA` retorna exatamente o funcionário da fixture e nenhum outro funcionário.
 
 ## PIM-008 — Combinar filtros de pesquisa
 
@@ -108,3 +110,28 @@ Use contas autorizadas para PIM e dados fictícios exclusivos da instância. Par
 4. Reabra o registro.
 
 **Resultado esperado:** a alteração não salva não aparece no registro, ou o sistema solicita confirmação antes de descartá-la.
+
+## PIM-011 — Pesquisar com espaços e caracteres especiais
+
+**Prioridade:** Média
+
+**Pré-condições:** usuário autorizado a pesquisar; fixture válida criada em PIM-002; nenhum funcionário usa o Employee Id inexistente abaixo.
+
+1. Pesquise o Employee Id da fixture válida com dois espaços antes e depois do valor, por exemplo `  QA-PIM-<RUN>-001  `.
+2. Execute a busca e confirme se o registro da fixture é retornado.
+3. Pesquise o Employee Id fictício inexistente ` QA-PIM_!<RUN>-999 `, incluindo pontuação e espaços.
+4. Execute a busca.
+
+**Resultado esperado:** a busca remove espaços no início/fim e retorna exatamente o funcionário da fixture no passo 2. No passo 4, não retorna funcionários e continua utilizável; erro de interface ou funcionário incorreto nos resultados reprova o caso.
+
+## PIM-012 — Validar limite de tamanho de campo de texto
+
+**Prioridade:** Média
+
+**Pré-condições:** campo de texto e limite máximo confirmados na ficha; usuário com permissão de criação; fixture exclusiva.
+
+1. No campo escolhido, insira um valor com exatamente o máximo de caracteres confirmado e salve.
+2. Em outro cadastro, insira um valor com um caractere a mais e tente salvar.
+3. Reabra os registros e confira o valor persistido.
+
+**Resultado esperado:** o valor no limite é aceito e persistido integralmente. O valor com limite + 1 é rejeitado com indicação do campo, ou não pode ser inserido além do limite; truncamento silencioso ou persistência acima do limite reprova o caso. Se o campo ou limite não estiver confirmado, bloqueie o caso.

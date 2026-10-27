@@ -8,11 +8,11 @@ Repositório de documentação e preparação de testes funcionais para o Orange
 
 ### Incluído
 
-- PIM: cadastro, edição e validação de funcionários.
-- Busca de funcionários por nome, ID e filtros combinados.
+- PIM: cadastro, edição, validação de campos e limites de texto de funcionários.
+- Busca de funcionários por nome, ID, filtros combinados, caracteres especiais e espaços.
 - Navegação entre telas e tentativa de acesso direto a páginas restritas.
 - Verificação de permissões para Admin, Supervisor e ESS.
-- Claims: criação, envio, aprovação, rejeição e validação de regras de valor, data e transição de status.
+- Claims: criação, envio, edição após envio, cancelamento antes da aprovação, aprovação, rejeição e validação de fronteiras de valor/data e status.
 
 ### Fora do escopo atual
 
@@ -25,6 +25,7 @@ O módulo Claim é usado como cenário de aprovação de negócio, em substitui�
 ## Estrutura
 
 - [`docs/execucao.md`](docs/execucao.md): preparação, dados de teste, registro de resultados e critério de saída.
+- [`docs/parametros-instancia.md`](docs/parametros-instancia.md): matriz de permissões, parâmetros configuráveis e fixtures para repetir os casos.
 - [`docs/casos-pim.md`](docs/casos-pim.md): cadastro, edição, busca e filtros de funcionários.
 - [`docs/casos-acesso.md`](docs/casos-acesso.md): navegação e verificação de acesso por perfil.
 - [`docs/casos-claim.md`](docs/casos-claim.md): criação, envio e aprovação/rejeição de solicitações de reembolso.
@@ -49,5 +50,3 @@ Para os casos de permissão, prepare contas com os perfis Admin, Supervisor e ES
 5. Para mensagens, limites de campos e regras que dependem da configuração, registre o texto ou valor efetivamente observado; não presuma um comportamento específico da demo.
 
 **Critério de saída proposto:** todos os casos de prioridade Alta executáveis passam, e toda falha ou bloqueio fica documentado com evidência e justificativa. Ajuste esse critério conforme o objetivo da execução.
-
-# orangehrm-qa-tests
