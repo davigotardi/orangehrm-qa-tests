@@ -48,6 +48,65 @@ Em reprovações, preserve evidências sem expor senhas ou dados pessoais. Regis
 
 Os resultados esperados que dependem da instalação devem ser preenchidos e aprovados em [parâmetros da instância e dados de teste](parametros-instancia.md) antes da rodada. Registre ali a matriz de acesso, categorias, moeda, precisão, limites, datas permitidas, campos obrigatórios e transições de status. Não transforme comportamento descoberto durante o teste em requisito retroativo; se um parâmetro estiver ausente, marque o caso dependente como bloqueado.
 
+## Histórico de execução
+
+### Rodada exploratória — demo pública — 29/10/2026
+
+| Campo | Valor |
+|---|---|
+| URL / ambiente | `https://opensource-demo.orangehrmlive.com/` — demo pública |
+| Data e horário | 29/10/2026, aproximadamente 11:48 (UTC−03:00) |
+| Versão exibida | OrangeHRM OS 5.9 |
+| Perfil utilizado | Admin |
+| Navegador | Navegador integrado; versão não registrada |
+| Dados alterados | Nenhum |
+
+| ID do caso | Resultado | Resultado observado / observações | Evidência |
+|---|---|---|---|
+| PIM-001 | **Aprovado** | Lista de funcionários abriu sem erro; foram exibidos 373 registros na execução inicial. | [Print PIM-001](images/pim-001-lista-funcionarios.png) |
+| PIM-009 | **Aprovado** | Busca pelo Employee Id numérico inexistente `987654321` exibiu “No Records Found”. O botão Reset restaurou a listagem. | [Print PIM-009](images/pim-009-busca-sem-registro.png) |
+| PIM-011 | **Reprovado — verificação parcial** | A busca por `QA-NO-RESULT-RUN-20261029-1146` provocou resposta HTTP 422 e mensagem “Invalid Parameter”. A busca subsequente por ID numérico inexistente funcionou. Não foram executados os passos com espaços em uma fixture válida; repetir e completar o caso antes de concluir a causa. | [Print PIM-011](images/pim-011-erro-parametro.png) |
+| ACC-006 | **Bloqueado — execução parcial** | Foi possível navegar para PIM e Claim com Admin. A matriz de permissões não estava preenchida, então não foi possível confirmar o resultado esperado formal do caso. | [Print PIM](images/acc-006-navegacao-pim.png); [print Claim](images/claim-001-formulario.png) |
+| ACC-007 | **Aprovado** | Depois do logout, a tentativa de abrir diretamente a URL de Claim redirecionou ao login. | [Print ACC-007](images/acc-007-redirecionamento-login.png) |
+| ACC-008 | **Aprovado** | Após logout, Voltar e atualizar mantiveram a tela de login; nenhum conteúdo restrito foi exibido. | [Print ACC-008](images/acc-008-voltar-apos-logout.png) |
+| CLM-001 | **Bloqueado — execução parcial** | O formulário de nova solicitação abriu. Event e Currency estavam identificados como obrigatórios; parâmetros e permissões da instância não foram confirmados, portanto o caso não conta como aprovado. | [Print CLM-001](images/claim-001-formulario.png) |
+
+Os demais casos não foram executados nesta rodada. Casos que exigem fixtures, contas adicionais ou parâmetros confirmados devem permanecer bloqueados até a preparação descrita neste guia. A demo pública pode mudar entre execuções; estes resultados registram somente o comportamento observado nesta data.
+
+### Prints dos casos executados
+
+As capturas abaixo documentam as telas observadas. Foram feitas em uma visita posterior à execução inicial; como a demo é compartilhada e pode mudar, a quantidade atual de registros pode diferir do valor anotado no resultado original. As capturas de PIM mostram apenas a interface e os resultados necessários, sem exibir dados dos funcionários.
+
+#### PIM-001 — Lista de funcionários
+
+![PIM-001 — lista de funcionários](images/pim-001-lista-funcionarios.png)
+
+#### PIM-009 — Busca sem correspondência
+
+![PIM-009 — busca sem correspondência](images/pim-009-busca-sem-registro.png)
+
+#### PIM-011 — Erro ao pesquisar ID alfanumérico
+
+![PIM-011 — mensagem Invalid Parameter](images/pim-011-erro-parametro.png)
+
+#### ACC-006 — Navegação entre módulos
+
+![ACC-006 — módulo PIM](images/acc-006-navegacao-pim.png)
+
+![ACC-006 — formulário do módulo Claim](images/claim-001-formulario.png)
+
+#### ACC-007 — Acesso direto após logout
+
+![ACC-007 — redirecionamento para login](images/acc-007-redirecionamento-login.png)
+
+#### ACC-008 — Botão Voltar após logout
+
+![ACC-008 — login após Voltar e atualizar](images/acc-008-voltar-apos-logout.png)
+
+#### CLM-001 — Formulário de nova solicitação
+
+![CLM-001 — formulário de nova solicitação](images/claim-001-formulario.png)
+
 ## Critério de saída
 
 Como critério inicial, todos os casos de prioridade Alta que sejam executáveis devem estar aprovados, e toda reprovação ou bloqueio deve ter evidência e justificativa. O responsável pela execução pode ajustar o critério antes da rodada, documentando a decisão.
